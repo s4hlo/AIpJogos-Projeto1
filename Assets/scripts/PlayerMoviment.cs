@@ -1,8 +1,12 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float moveSpeed = 10.0f;
+    private int health = 100;
+    public int ammo = 3;
+    private float moveSpeed = 10.0f;
+    public GameObject bulletPrefab;
 
     private void Update()
     {
@@ -10,6 +14,11 @@ public class PlayerMovement : MonoBehaviour
         float verticalInput = Input.GetAxis("Vertical");
 
         Vector3 movement = new Vector3(horizontalInput, 0.0f, verticalInput).normalized;
+
+        if (Input.GetKeyDown(KeyCode.Space) && ammo > 0)
+        {
+            Shoot();
+        }
 
         if (movement != Vector3.zero)
         {
@@ -26,4 +35,66 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
+
+    public void Damage(int damage)
+    {
+        health -= damage;
+        if (health <= 0)
+        {
+            Debug.Log("Player is dead");
+        }
+    }
+
+    public void Heal(int heal)
+    {
+        health += heal;
+        if (health > 100)
+        {
+            health = 100;
+        }
+    }
+
+    public void AddAmmo(int ammo)
+    {
+        this.ammo += ammo;
+    }
+
+    public void Shoot()
+    {
+        GameObject closestEnemy = null;
+        Vector3 direction = Vector3.forward;
+        Collider[] colliders = Physics.OverlapSphere(transform.position, 10.0f);
+
+        foreach (Collider collider in colliders)
+        {
+            if (collider.CompareTag("Enemy"))
+            {
+                closestEnemy = collider.gameObject;
+                break;
+            }
+        }
+
+        if (closestEnemy != null)
+        {
+            direction = (closestEnemy.transform.position - transform.position).normalized;
+
+            if (ammo > 0)
+            {
+                ammo--;
+                // Instantiate the bullet at a position slightly in front of the player
+                Vector3 bulletSpawnPosition = transform.position + direction * 1.5f;
+                GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPosition, Quaternion.identity);
+                bullet.GetComponent<Rigidbody>().AddForce(direction * 1000);
+            }
+            else
+            {
+                Debug.Log("No ammo");
+            }
+        }
+        else
+        {
+            Debug.Log("No enemy in range");
+        }
+    }
+
 }

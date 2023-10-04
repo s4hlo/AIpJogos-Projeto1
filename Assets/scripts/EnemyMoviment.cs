@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class EnemyMoviment : MonoBehaviour
 {
+    private int health = 2;
     public Transform player;
     public float moveSpeed = 30.0f;
     private Rigidbody rb;
@@ -29,6 +30,16 @@ public class EnemyMoviment : MonoBehaviour
           Debug.Log("Player hit");
 
           Destroy(gameObject);
+        }
+    }
+
+    public void Damage(int damage)
+    {
+        health -= damage;
+        if (health <= 0)
+        {
+            Debug.Log("Enemy is dead");
+            Destroy(gameObject);
         }
     }
 }
