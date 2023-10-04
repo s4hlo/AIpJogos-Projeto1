@@ -18,7 +18,6 @@ public class EnemyMoviment : MonoBehaviour
             Vector3 moveDirection = (player.position - transform.position).normalized;
 
             rb.velocity = moveDirection * moveSpeed;
-            // use addforce instead of velocity
         }
     }
 

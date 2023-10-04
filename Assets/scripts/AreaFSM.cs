@@ -26,8 +26,7 @@ public class AreaFSM : MonoBehaviour
 
     public void Update()
     {
-        // debug name of the object and current state
-        // Debug.Log(gameObject.name + " " + currentState);
+        Debug.Log(gameObject.name + " " + currentState);
     }
 
     public void SetState(int state)
