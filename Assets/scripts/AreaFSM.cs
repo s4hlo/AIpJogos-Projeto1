@@ -8,6 +8,7 @@ public class AreaFSM : MonoBehaviour
     public Color highlightColor = new Color(1f, 0.5f, 0f);
     public GameObject enemyPrefab;
     public GameObject healthBoxPrefab;
+    public GameObject ammoBoxPrefab;
     public List<GameObject> collectables = new List<GameObject>();
 
     public List<GameObject> enemiesToLaunch = new List<GameObject>();
@@ -19,7 +20,7 @@ public class AreaFSM : MonoBehaviour
         Reseting,
     }
 
-    private State currentState = State.WaitingForPlayer; //TODO use this
+    private State currentState = State.WaitingForPlayer;
 
     private void Start()
     {
@@ -74,7 +75,9 @@ public class AreaFSM : MonoBehaviour
             {
                 continue;
             }
-            enemy.SetActive(true);
+            //enable enemy rigidbody
+            enemy.GetComponent<Rigidbody>().isKinematic = false;
+            // enemy.SetActive(true);
         }
 
         enemiesToLaunch.Clear();
@@ -85,14 +88,17 @@ public class AreaFSM : MonoBehaviour
         Vector3 position = transform.position;
         GameObject enemy;
 
-        for (int i = 0; i < UnityEngine.Random.Range(3, 5); i++)
+        for (int i = 0; i < Random.Range(2, 4); i++)
         {
             if (i % 2 == 0)
             {
                 collectables.Add(Instantiate(healthBoxPrefab, position + UtilsRandomPosition() * 1.5f, Quaternion.identity));
+                collectables.Add(Instantiate(ammoBoxPrefab, position + UtilsRandomPosition() * 1.5f, Quaternion.identity));
             }
             enemy = Instantiate(enemyPrefab, position + UtilsRandomPosition(), Quaternion.identity);
-            enemy.SetActive(false);
+            //disable enemy rigidbody
+            enemy.GetComponent<Rigidbody>().isKinematic = true;
+            // enemy.SetActive(false);
             enemy.GetComponent<EnemyMoviment>().player = GameObject.Find("Player").transform;
             enemiesToLaunch.Add(enemy);
         }
@@ -100,7 +106,7 @@ public class AreaFSM : MonoBehaviour
 
     private Vector3 UtilsRandomPosition()
     {
-        Vector3 Unit = new Vector3(UnityEngine.Random.Range(-5, 5), 0, UnityEngine.Random.Range(-5, 5));
+        Vector3 Unit = new Vector3(Random.Range(-5, 5), 0, Random.Range(-5, 5));
         return Unit;
     }
 

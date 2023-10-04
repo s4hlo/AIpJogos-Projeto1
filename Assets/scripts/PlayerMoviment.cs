@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -38,7 +39,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void Damage(int damage)
     {
-        Debug.Log("Health: " + health );
+        Debug.Log("Health: " + health + " Ammo: " + ammo);
         health -= damage;
         if (health <= 0)
         {
@@ -63,12 +64,12 @@ public class PlayerMovement : MonoBehaviour
     public void AddAmmo(int ammo)
     {
         this.ammo += ammo;
+        Debug.Log("Health: " + health + " Ammo: " + ammo);
     }
 
     public void Shoot()
     {
         GameObject closestEnemy = null;
-        Vector3 direction = Vector3.forward;
         Collider[] colliders = Physics.OverlapSphere(transform.position, 10.0f);
 
         foreach (Collider collider in colliders)
@@ -82,12 +83,12 @@ public class PlayerMovement : MonoBehaviour
 
         if (closestEnemy != null)
         {
-            direction = (closestEnemy.transform.position - transform.position).normalized;
+            Vector3 direction = (closestEnemy.transform.position - transform.position).normalized;
 
             if (ammo > 0)
             {
                 ammo--;
-                // Instantiate the bullet at a position slightly in front of the player
+                Debug.Log("Health: " + health + " Ammo: " + ammo);
                 Vector3 bulletSpawnPosition = transform.position + direction * 1.5f;
                 GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPosition, Quaternion.identity);
                 bullet.GetComponent<Rigidbody>().AddForce(direction * 1000);
@@ -97,7 +98,13 @@ public class PlayerMovement : MonoBehaviour
                 Debug.Log("No ammo");
             }
         }
-        
+
     }
+
+    public (int, int) GetStatus()
+    {
+        return (health, ammo);
+    }
+
 
 }

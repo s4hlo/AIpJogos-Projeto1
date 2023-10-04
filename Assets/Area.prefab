@@ -51,6 +51,7 @@ MonoBehaviour:
   highlightColor: {r: 1, g: 0.5, b: 0, a: 1}
   enemyPrefab: {fileID: 5021950525015223923, guid: 92f3623b1b2583a4681a9eb78f43465c, type: 3}
   healthBoxPrefab: {fileID: 6228347423719982941, guid: 34b03657cc86b48488acf20bd189c0c6, type: 3}
+  ammoBoxPrefab: {fileID: 5871557683018699216, guid: 5ecec7bb8e4633d499079c114da7dc1e, type: 3}
   collectables: []
   enemiesToLaunch: []
 --- !u!64 &6952317982101138411
