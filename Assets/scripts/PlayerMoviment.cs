@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private int health = 100;
+    public int health = 90;
     public int ammo = 3;
     private float moveSpeed = 10.0f;
     public GameObject bulletPrefab;
@@ -45,13 +45,18 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void Heal(int heal)
+    public bool Heal(int heal)
     {
+        if (health == 100)
+        {
+            return false;
+        }
         health += heal;
         if (health > 100)
         {
             health = 100;
         }
+        return true;
     }
 
     public void AddAmmo(int ammo)

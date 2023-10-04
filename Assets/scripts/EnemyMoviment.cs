@@ -27,9 +27,9 @@ public class EnemyMoviment : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Player"))
         {
-          Debug.Log("Player hit");
+            Debug.Log("Player hit");
 
-          Destroy(gameObject);
+            Destroy(gameObject);
         }
     }
 
@@ -41,5 +41,28 @@ public class EnemyMoviment : MonoBehaviour
             Debug.Log("Enemy is dead");
             Destroy(gameObject);
         }
+
+        if (health == 1)
+        {
+            GetComponent<Renderer>().material.color = Color.black;
+        }
+    }
+
+    public bool Heal(int heal)
+    {
+        if (health == 2)
+        {
+            return false;
+        }
+        health += heal;
+        if (health > 2)
+        {
+            health = 2;
+        }
+        if (health == 2)
+        {
+            GetComponent<Renderer>().material.color = Color.red;
+        }
+        return true;
     }
 }
