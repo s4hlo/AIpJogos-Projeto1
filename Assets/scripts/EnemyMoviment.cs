@@ -43,6 +43,7 @@ public class EnemyMoviment : MonoBehaviour
         {
             Vector3 moveDirection = (target.position - transform.position).normalized;
 
+            if (rb.isKinematic == false)
             rb.velocity = moveDirection * moveSpeed;
         } else {
             setState(2);
