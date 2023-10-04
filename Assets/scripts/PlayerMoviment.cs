@@ -38,6 +38,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void Damage(int damage)
     {
+        Debug.Log("Health: " + health );
         health -= damage;
         if (health <= 0)
         {
@@ -96,10 +97,7 @@ public class PlayerMovement : MonoBehaviour
                 Debug.Log("No ammo");
             }
         }
-        else
-        {
-            Debug.Log("No enemy in range");
-        }
+        
     }
 
 }

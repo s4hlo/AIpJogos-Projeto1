@@ -15,7 +15,6 @@ public class BulletEngine : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy"))
         {
             collision.gameObject.GetComponent<EnemyMoviment>().Damage(1);
-            Destroy(gameObject);
         }
     }
     

@@ -6,7 +6,9 @@ public class AreaFSM : MonoBehaviour
     [SerializeField] private Renderer floorRenderer;
     public Color normalColor = Color.white;
     public Color highlightColor = new Color(1f, 0.5f, 0f);
-    public GameObject myPrefab;
+    public GameObject enemyPrefab;
+    public GameObject healthBoxPrefab;
+    public List<GameObject> collectables = new List<GameObject>();
 
     public List<GameObject> enemiesToLaunch = new List<GameObject>();
 
@@ -26,7 +28,6 @@ public class AreaFSM : MonoBehaviour
 
     public void Update()
     {
-        Debug.Log(gameObject.name + " " + currentState);
     }
 
     public void SetState(int state)
@@ -44,33 +45,53 @@ public class AreaFSM : MonoBehaviour
                 break;
             case 2:
                 currentState = State.Reseting;
-                RespawnEnemys();
-                // RespawnCollectables();
+                RemoveCollectables();
+                RespawnEntitys();
                 SetState(0);
                 break;
         }
+    }
+
+    private void RemoveCollectables()
+    {
+        foreach (GameObject collectable in collectables)
+        {
+            if (collectable == null)
+            {
+                continue;
+            }
+            Destroy(collectable);
+        }
+
+        collectables.Clear();
     }
 
     private void ReleaseEnemys()
     {
         foreach (GameObject enemy in enemiesToLaunch)
         {
-            if (enemy == null) {
+            if (enemy == null)
+            {
                 continue;
-            } 
+            }
             enemy.SetActive(true);
         }
 
         enemiesToLaunch.Clear();
     }
 
-    private void RespawnEnemys()
+    private void RespawnEntitys()
     {
         Vector3 position = transform.position;
         GameObject enemy;
+
         for (int i = 0; i < UnityEngine.Random.Range(3, 5); i++)
         {
-            enemy = Instantiate(myPrefab, position + UtilsRandomPosition(), Quaternion.identity);
+            if (i % 2 == 0)
+            {
+                collectables.Add(Instantiate(healthBoxPrefab, position + UtilsRandomPosition() * 1.5f, Quaternion.identity));
+            }
+            enemy = Instantiate(enemyPrefab, position + UtilsRandomPosition(), Quaternion.identity);
             enemy.SetActive(false);
             enemy.GetComponent<EnemyMoviment>().player = GameObject.Find("Player").transform;
             enemiesToLaunch.Add(enemy);

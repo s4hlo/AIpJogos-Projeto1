@@ -49,7 +49,9 @@ MonoBehaviour:
   floorRenderer: {fileID: 2636383567435165735}
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   highlightColor: {r: 1, g: 0.5, b: 0, a: 1}
-  myPrefab: {fileID: 5021950525015223923, guid: 92f3623b1b2583a4681a9eb78f43465c, type: 3}
+  enemyPrefab: {fileID: 5021950525015223923, guid: 92f3623b1b2583a4681a9eb78f43465c, type: 3}
+  healthBoxPrefab: {fileID: 6228347423719982941, guid: 34b03657cc86b48488acf20bd189c0c6, type: 3}
+  collectables: []
   enemiesToLaunch: []
 --- !u!64 &6952317982101138411
 MeshCollider:

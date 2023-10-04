@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyMoviment : MonoBehaviour
@@ -7,18 +8,44 @@ public class EnemyMoviment : MonoBehaviour
     public float moveSpeed = 30.0f;
     private Rigidbody rb;
 
+    Transform target;
+
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        setState(1);
+    }
+
+
+    private void setState(int state)
+    {
+
+        if (state == 1) //chasing player
+        {
+            target = player;
+            GetComponent<Renderer>().material.color = Color.red;
+        }
+        if (state == 2) // chasing health if not chasing player
+        {
+            GetComponent<Renderer>().material.color = Color.black;
+            target = GameObject.FindGameObjectWithTag("HealthBox").transform;
+            if (target == null)
+            {
+                setState(1);
+            }
+        }
     }
 
     private void FixedUpdate()
     {
-        if (player != null)
+        if (target != null)
         {
-            Vector3 moveDirection = (player.position - transform.position).normalized;
+            Vector3 moveDirection = (target.position - transform.position).normalized;
 
             rb.velocity = moveDirection * moveSpeed;
+        } else {
+            setState(2);
         }
     }
 
@@ -27,7 +54,8 @@ public class EnemyMoviment : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Player hit");
+
+            collision.gameObject.GetComponent<PlayerMovement>().Damage(1);
 
             Destroy(gameObject);
         }
@@ -38,13 +66,12 @@ public class EnemyMoviment : MonoBehaviour
         health -= damage;
         if (health <= 0)
         {
-            Debug.Log("Enemy is dead");
             Destroy(gameObject);
         }
 
         if (health == 1)
         {
-            GetComponent<Renderer>().material.color = Color.black;
+            setState(2);
         }
     }
 
@@ -61,7 +88,7 @@ public class EnemyMoviment : MonoBehaviour
         }
         if (health == 2)
         {
-            GetComponent<Renderer>().material.color = Color.red;
+            setState(1);
         }
         return true;
     }
