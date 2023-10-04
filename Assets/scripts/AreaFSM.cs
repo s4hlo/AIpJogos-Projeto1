@@ -96,7 +96,6 @@ public class AreaFSM : MonoBehaviour
                 collectables.Add(Instantiate(ammoBoxPrefab, position + UtilsRandomPosition() * 1.5f, Quaternion.identity));
             }
             enemy = Instantiate(enemyPrefab, position + UtilsRandomPosition(), Quaternion.identity);
-            //disable enemy rigidbody
             enemy.GetComponent<Rigidbody>().isKinematic = true;
             // enemy.SetActive(false);
             enemy.GetComponent<EnemyMoviment>().player = GameObject.Find("Player").transform;

@@ -10,6 +10,14 @@ public class EnemyMoviment : MonoBehaviour
 
     Transform target;
 
+    private enum State
+    {
+        CHASE_PLAYER,
+        CHASE_HEALTH,
+        IDLE,
+    }
+
+    private State currentState = State.IDLE;
 
     private void Start()
     {
@@ -18,22 +26,30 @@ public class EnemyMoviment : MonoBehaviour
     }
 
 
-    private void setState(int state)
+    public void setState(int state)
     {
+        // currentState = (State)state;
 
         if (state == 1) //chasing player
         {
+            currentState = State.CHASE_PLAYER;
             target = player;
             GetComponent<Renderer>().material.color = Color.red;
         }
         if (state == 2) // chasing health if not chasing player
         {
+            currentState = State.CHASE_HEALTH;
             GetComponent<Renderer>().material.color = Color.black;
             target = GameObject.FindGameObjectWithTag("HealthBox").transform;
             if (target == null)
             {
                 setState(1);
             }
+        }
+        if (state == 3) // idle
+        {
+            currentState = State.IDLE;
+            target = null;
         }
     }
 
@@ -72,7 +88,7 @@ public class EnemyMoviment : MonoBehaviour
 
         if (health == 1)
         {
-            setState(2);
+            setState(2); // TODO : state CHASE_HEALTH
         }
     }
 
@@ -89,7 +105,7 @@ public class EnemyMoviment : MonoBehaviour
         }
         if (health == 2)
         {
-            setState(1);
+            setState(1); // TODO : state CHASE_PLAYER
         }
         return true;
     }
